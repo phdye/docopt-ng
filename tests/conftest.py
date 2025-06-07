@@ -24,7 +24,9 @@ def parse_test(raw: str):
         if i == 0:
             if not fixture.strip() == "":
                 raise DocoptTestException(
-                    f"Unexpected content before first testcase: {fixture}"
+                    "Unexpected content before first testcase: {}".format(
+                        fixture
+                    )
                 )
             continue
 
@@ -37,7 +39,10 @@ def parse_test(raw: str):
                     expect = json.loads(expect)
                 except json.JSONDecodeError as e:
                     raise DocoptTestException(
-                        f"The test case JSON is invalid: {expect!r} - {e}."
+                        "The test case JSON is invalid: {!r} - {}.".format(
+                            expect,
+                            e,
+                        )
                     )
                 prog, _, argv = argv.strip().partition(" ")
                 cases.append((prog, argv, expect))
@@ -48,8 +53,8 @@ def parse_test(raw: str):
                 )
         except Exception as e:
             raise DocoptTestException(
-                f"Failed to parse test case {i}. {e}\n"
-                f'The test\'s definition is:\nr"""{fixture}'
+                "Failed to parse test case {}. {}\n".format(i, e),
+                "The test's definition is:\nr\"\"\"{}".format(fixture)
             ) from None
         yield doc, cases
 
@@ -58,7 +63,7 @@ class DocoptTestFile(pytest.File):
     def collect(self):
         raw = self.path.open().read()
         for i, (doc, cases) in enumerate(parse_test(raw), 1):
-            name = f"{self.path.stem}({i})"
+            name = "{}({})".format(self.path.stem, i)
             for case in cases:
                 yield DocoptTestItem.from_parent(
                     name=name, parent=self, doc=doc, case=case
@@ -87,15 +92,15 @@ class DocoptTestItem(pytest.Item):
                 (
                     "usecase execution failed:",
                     self.doc.rstrip(),
-                    f"$ {self.prog} {self.argv}",
-                    f"result> {json.dumps(excinfo.value.args[1])}",
-                    f"expect> {json.dumps(self.expect)}",
+                    "$ {} {}".format(self.prog, self.argv),
+                    "result> {}".format(json.dumps(excinfo.value.args[1])),
+                    "expect> {}".format(json.dumps(self.expect)),
                 )
             )
         return super().repr_failure(excinfo)
 
     def reportinfo(self):
-        return self.path, 0, f"usecase: {self.name}"
+        return self.path, 0, "usecase: {}".format(self.name)
 
 
 class DocoptTestException(Exception):

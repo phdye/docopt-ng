@@ -433,7 +433,9 @@ def _parse_longer(
     current_token = tokens.move()
     if current_token is None or not current_token.startswith("--"):
         raise ValueError(
-            f"parse_longer got what appears to be an invalid token: {current_token}"
+            "parse_longer got what appears to be an invalid token: {}".format(
+                current_token
+            )
         )
     longer, maybe_eq, maybe_value = current_token.partition("=")
     if maybe_eq == maybe_value == "":
@@ -465,10 +467,16 @@ def _parse_longer(
             if o.longer and _levenshtein_norm(longer, o.longer) < 0.25
         ]
         if corrected:
-            print(f"NB: Corrected {corrected[0][0]} to {corrected[0][1].longer}")
+            print(
+                "NB: Corrected {} to {}".format(
+                    corrected[0][0], corrected[0][1].longer
+                )
+            )
         similar = [correct for (original, correct) in corrected]
     if len(similar) > 1:
-        raise DocoptLanguageError(f"{longer} is not a unique prefix: {similar}?")
+        raise DocoptLanguageError(
+            "{} is not a unique prefix: {}?".format(longer, similar)
+        )
     elif len(similar) < 1:
         argcount = 1 if maybe_eq == "=" else 0
         o = _Option(None, longer, argcount)
@@ -499,7 +507,9 @@ def _parse_shorts(
     token = tokens.move()
     if token is None or not token.startswith("-") or token.startswith("--"):
         raise ValueError(
-            f"parse_shorts got what appears to be an invalid token: {token}"
+            "parse_shorts got what appears to be an invalid token: {}".format(
+                token
+            )
         )
     left = token.lstrip("-")
     parsed: List[_Pattern] = []
@@ -531,8 +541,11 @@ def _parse_shorts(
                 if similar:
                     if transform_name:
                         print(
-                            f"NB: Corrected {short} to {similar[0].short} "
-                            f"via {transform_name}"
+                            "NB: Corrected {} to {} via {}".format(
+                                short,
+                                similar[0].short,
+                                transform_name,
+                            )
                         )
                     break
             # if transformations do not resolve, try abbreviations of 'longer' forms
@@ -559,8 +572,11 @@ def _parse_shorts(
                         ):
                             similar = [o]
                             print(
-                                f"NB: Corrected {short} to {similar[0].longer} "
-                                f"via abbreviation (case change: {transform_name})"
+                                "NB: Corrected {} to {} via abbreviation (case change: {})".format(
+                                    short,
+                                    similar[0].longer,
+                                    transform_name,
+                                )
                             )
                             break
                 if len(similar):
@@ -568,7 +584,7 @@ def _parse_shorts(
                     break
         if len(similar) > 1:
             raise DocoptLanguageError(
-                f"{short} is specified ambiguously {len(similar)} times"
+                "{} is specified ambiguously {} times".format(short, len(similar))
             )
         elif len(similar) < 1:
             o = _Option(short, None, 0)
@@ -923,7 +939,7 @@ def docopt(
         return ParsedOptions((a.name, a.value) for a in (pattern.flat() + collected))
     if left:
         raise DocoptExit(
-            f"Warning: found unmatched (duplicate?) arguments {left}",
+            "Warning: found unmatched (duplicate?) arguments {}".format(left),
             collected=collected,
             left=left,
         )
