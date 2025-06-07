@@ -20,6 +20,11 @@ catch regressions.
    `">=3.7"`【F:pyproject.toml†L5-L14】.
    This will need to be relaxed in later phases.
 
+### Phase 1 Status
+- Tests executed with Python 3.11 produced 614 passes, matching the baseline.
+- A Python 3.2.5 environment could not be created in this container, so installation failure is unverified.
+
+
 ## Phase 2 – Remove Incompatible Future Import and Update Typing
 
 1. `docopt/__init__.py` uses `from __future__ import annotations`【F:docopt/__init__.py†L25】
