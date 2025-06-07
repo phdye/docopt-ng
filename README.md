@@ -75,7 +75,7 @@ Use [pip](http://pip-installer.org):
 
     python -m pip install docopt-ng
 
-**docopt-ng** is tested with Python 3.7+.
+**docopt-ng** is tested with Python 3.2 and newer.
 
 # API
 

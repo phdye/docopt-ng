@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## UNRELEASED
+## Version 0.9.1:
+
+### Added
+
+- Support for Python 3.2.
 
 ### Changed
 
