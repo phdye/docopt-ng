@@ -10,7 +10,7 @@ authors = [
     {name = "Nick Crews", email = "nicholas.b.crews@gmail.com"},
 ]
 dependencies = []
-requires-python = ">=3.7"
+requires-python = ">=3.2"
 license = {text = "MIT"}
 readme = "README.md"
 classifiers = [
