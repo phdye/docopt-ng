@@ -24,12 +24,12 @@ Contributors (roughly in chronological order):
 
 import re
 import sys
+from collections import namedtuple
 from ._vendor.typing import (
     Any,
     Callable,
     Dict,
     List,
-    NamedTuple,
     Optional,
     Tuple,
     Type,
@@ -730,11 +730,10 @@ def _parse_argv(
     return parsed
 
 
-class _DocSections(NamedTuple):
-    before_usage: str
-    usage_header: str
-    usage_body: str
-    after_usage: str
+_DocSections = namedtuple(
+    "_DocSections",
+    ["before_usage", "usage_header", "usage_body", "after_usage"],
+)
 
 
 def _parse_docstring_sections(docstring: str) -> _DocSections:
