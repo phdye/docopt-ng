@@ -1,6 +1,12 @@
 import json
 import re
-from pathlib import Path
+try:
+    from pathlib import Path  # type: ignore
+except Exception:  # pragma: no cover - old Python
+    try:
+        from pathlib2 import Path  # type: ignore
+    except Exception:
+        from docopt._vendor.pathlib import Path
 from typing import Generator
 from typing import Sequence
 from unittest import mock
