@@ -921,10 +921,9 @@ def docopt(
     sections = _parse_docstring_sections(docstring)
     _lint_docstring(sections)
     DocoptExit.usage = sections.usage_header + sections.usage_body
-    options = [
-        *_parse_options(sections.before_usage),
-        *_parse_options(sections.after_usage),
-    ]
+    options = []
+    options.extend(_parse_options(sections.before_usage))
+    options.extend(_parse_options(sections.after_usage))
     pattern = _parse_pattern(_formal_usage(sections.usage_body), options)
     pattern_options = set(pattern.flat(_Option))
     for options_shortcut in pattern.flat(_OptionsShortcut):
