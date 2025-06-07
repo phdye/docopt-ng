@@ -1,5 +1,7 @@
 import json
 import re
+if not hasattr(json, "JSONDecodeError"):  # pragma: no cover - old Python
+    json.JSONDecodeError = ValueError  # type: ignore
 try:
     from pathlib import Path  # type: ignore
 except Exception:  # pragma: no cover - old Python
@@ -9,7 +11,10 @@ except Exception:  # pragma: no cover - old Python
         from docopt._vendor.pathlib import Path
 from typing import Generator
 from typing import Sequence
-from unittest import mock
+try:
+    from unittest import mock  # type: ignore
+except Exception:  # pragma: no cover - old Python
+    import mock  # type: ignore
 
 import pytest
 
