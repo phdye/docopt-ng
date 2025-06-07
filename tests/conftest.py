@@ -14,7 +14,11 @@ from typing import Sequence
 try:
     from unittest import mock  # type: ignore
 except Exception:  # pragma: no cover - old Python
-    import mock  # type: ignore
+    try:
+        import mock  # type: ignore
+    except Exception:
+        from importlib import import_module
+        mock = import_module("mock")  # type: ignore
 
 import pytest
 
