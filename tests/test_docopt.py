@@ -935,7 +935,7 @@ def test_issue_71_double_dash_is_not_a_valid_option_argument():
     assert exc.left == []
 
 
-option_examples: Sequence[tuple[str, Sequence[_Option]]] = [
+option_examples = [
     ("", []),
     ("Some content\nbefore the first option.", []),
     ("-f", [_Option("-f", None, 0, False)]),

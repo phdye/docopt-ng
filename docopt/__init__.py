@@ -179,7 +179,7 @@ class _LeafPattern(_Pattern):
         self, left: List["_LeafPattern"], collected: Optional[List["_Pattern"]] = None
     ) -> Tuple[bool, List["_LeafPattern"], List["_Pattern"]]:
         collected = [] if collected is None else collected
-        increment: Optional[Any] = None
+        increment = None
         pos, match = self.single_match(left)
         if match is None or pos is None:
             return False, left, collected
@@ -512,16 +512,16 @@ def _parse_shorts(
             )
         )
     left = token.lstrip("-")
-    parsed: List[_Pattern] = []
+    parsed = []
     while left != "":
         short, left = "-" + left[0], left[1:]
-        transformations: Dict[Optional[str], Callable[[str], str]] = {None: lambda x: x}
+        transformations = {None: lambda x: x}
         if more_magic:
             transformations["lowercase"] = lambda x: x.lower()
             transformations["uppercase"] = lambda x: x.upper()
         # try identity, lowercase, uppercase, iff such resolves uniquely
         # (ie if upper and lowercase are not both defined)
-        similar: List[_Option] = []
+        similar = []
         de_abbreviated = False
         for transform_name, transform in transformations.items():
             transformed = list(set([transform(o.short) for o in options if o.short]))
@@ -629,8 +629,8 @@ def _parse_pattern(source: str, options: List[_Option]) -> _Required:
 
 def _parse_expr(tokens: _Tokens, options: List[_Option]) -> List[_Pattern]:
     """expr ::= seq ( '|' seq )* ;"""
-    result: List[_Pattern] = []
-    seq_0: List[_Pattern] = _parse_seq(tokens, options)
+    result = []
+    seq_0 = _parse_seq(tokens, options)
     if tokens.current() != "|":
         return seq_0
     if len(seq_0) > 1:
@@ -649,7 +649,7 @@ def _parse_expr(tokens: _Tokens, options: List[_Option]) -> List[_Pattern]:
 
 def _parse_seq(tokens: _Tokens, options: List[_Option]) -> List[_Pattern]:
     """seq ::= ( atom [ '...' ] )* ;"""
-    result: List[_Pattern] = []
+    result = []
     while tokens.current() not in [None, "]", ")", "|"]:
         atom = _parse_atom(tokens, options)
         if tokens.current() == "...":
@@ -709,7 +709,7 @@ def _parse_argv(
         except ValueError:
             return False
 
-    parsed: List[_Pattern] = []
+    parsed = []
     current_token = tokens.current()
     while current_token is not None:
         if current_token == "--":
