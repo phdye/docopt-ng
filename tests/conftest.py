@@ -9,8 +9,6 @@ except Exception:  # pragma: no cover - old Python
         from pathlib2 import Path  # type: ignore
     except Exception:
         from docopt._vendor.pathlib import Path
-from typing import Generator
-from typing import Sequence
 try:
     from unittest import mock  # type: ignore
 except Exception:  # pragma: no cover - old Python
@@ -25,12 +23,12 @@ import pytest
 import docopt
 
 
-def pytest_collect_file(file_path: Path, parent):
+def pytest_collect_file(file_path, parent):
     if file_path.suffix == ".docopt" and file_path.stem.startswith("test"):
         return DocoptTestFile.from_parent(path=file_path, parent=parent)
 
 
-def parse_test(raw: str):
+def parse_test(raw):
     raw = re.compile("#.*$", re.M).sub("", raw).strip()
     if raw.startswith('"""'):
         raw = raw[3:]
@@ -123,7 +121,7 @@ class DocoptTestException(Exception):
 
 
 @pytest.fixture(autouse=True)
-def override_sys_argv(argv: Sequence[str]) -> Generator[None, None, None]:
+def override_sys_argv(argv):
     """Patch `sys.argv` with a fixed value during tests.
 
     A lot of docopt tests call docopt() without specifying argv, which uses
@@ -134,6 +132,6 @@ def override_sys_argv(argv: Sequence[str]) -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def argv() -> Sequence[str]:
+def argv():
     """The `sys.argv` value seen inside tests."""
     return ["exampleprogram"]
